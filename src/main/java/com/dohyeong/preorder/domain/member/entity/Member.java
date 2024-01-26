@@ -1,17 +1,18 @@
-package com.dohyeong.preorder.member.entity;
+package com.dohyeong.preorder.domain.member.entity;
 
 
+import com.dohyeong.preorder.domain.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-public class Member {
+public class Member extends BaseEntity {
 
     //pk
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
-    private Long memberid;
+    private Long member_id;
 
     //이메일
     @Column(nullable = false, unique = true)
@@ -26,6 +27,7 @@ public class Member {
     private String description;
 
     //사진 url
+    @Column(nullable = false)
     private String profile_img;
 
 }
