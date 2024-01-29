@@ -23,20 +23,24 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'		//jpa
-	//implementation 'org.springframework.boot:spring-boot-starter-security'		//security
+	implementation 'org.springframework.boot:spring-boot-starter-security'		//security
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'	//유효성검사
-	implementation 'org.springframework.boot:spring-boot-starter-mail'	//spring mail
+	implementation 'org.springframework.boot:spring-boot-starter-validation'	//validation
+	implementation 'org.springframework.boot:spring-boot-starter-mail'			//spring mail
 	compileOnly 'org.projectlombok:lombok'										//lombok
 	annotationProcessor 'org.projectlombok:lombok'								//lombok
+
+	//aws
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE' //s3
 
 	//db
 	runtimeOnly 'com.mysql:mysql-connector-j:8.0.33'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'io.lettuce:lettuce-core:6.2.1.RELEASE'
 
 	//test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	//testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation 'org.springframework.security:spring-security-test'
 }
 
 tasks.named('test') {

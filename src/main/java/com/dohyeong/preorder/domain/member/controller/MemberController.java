@@ -3,6 +3,7 @@ package com.dohyeong.preorder.domain.member.controller;
 import com.dohyeong.preorder.domain.member.dto.MailTestDto;
 import com.dohyeong.preorder.domain.member.dto.MemberPatchDto;
 import com.dohyeong.preorder.domain.member.dto.MemberPostDto;
+import com.dohyeong.preorder.domain.member.mapper.MemberMapper;
 import com.dohyeong.preorder.domain.member.service.MemberService;
 import com.dohyeong.preorder.global.mail.service.MailServiceImpl;
 import jakarta.validation.Valid;
@@ -24,24 +25,34 @@ public class MemberController {
 
     private final MailServiceImpl mailService;
     private final MemberService memberService;
+    private final MemberMapper memberMapper;
 
-    //이메일 인증
-    @PostMapping("/emailConfirm")
-    public ResponseEntity emailConfirm(@Valid @RequestBody MailTestDto mailTestDto) throws Exception{
+    //이메일 보내기
+    @PostMapping("/emailSend")
+    public ResponseEntity emailSend(@Valid @RequestBody MailTestDto mailTestDto) throws Exception{
         //인증번호
         String confirm = mailService.sendSimpleMessage(mailTestDto.getEmail());
         System.out.println(confirm);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    //이메일 인증 체크
+    @PostMapping("/emailConfirm")
+    public ResponseEntity emailConfirm(@Valid @RequestBody MailTestDto mailTestDto) throws Exception{
+            if(mailService.verifyEmailCode(mailTestDto.getEmail(),mailTestDto.getCode()))
+                return ResponseEntity.ok("이메일체크확인 완료");
+
+       return ResponseEntity.notFound().build();
+    }
+
+
     //회원가입
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity createMember(@Valid @RequestPart(value = "key")MemberPostDto memberPostDto,
                                        @RequestParam(value = "image")MultipartFile image) throws IOException{
-
-        return null;
+        memberService.saveMember(memberMapper.memberPostToMember(memberPostDto),image);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
 
     //회원정보 수정
     @PatchMapping()
@@ -51,6 +62,4 @@ public class MemberController {
     }
 
     //회원 조회
-
-
 }

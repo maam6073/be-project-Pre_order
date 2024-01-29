@@ -1,26 +1,28 @@
 package com.dohyeong.preorder.global.mail.service;
 
+import com.dohyeong.preorder.global.util.RedisUtil;
 import jakarta.mail.Message;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+
 
 import org.springframework.mail.MailException;
 
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-
-
 import java.util.Random;
 
+
 @Service
+@RequiredArgsConstructor
 public class MailServiceImpl implements MailService{
+    private final JavaMailSender emailSender;
+    private final RedisUtil redisUtil;
 
-    @Autowired
-    JavaMailSender emailSender;
 
-    public static final String ePw = createKey();
+    public static final String code = createKey();
 
     private MimeMessage createMessage(String to)throws Exception {
         MimeMessage message = emailSender.createMimeMessage();
@@ -40,10 +42,13 @@ public class MailServiceImpl implements MailService{
         msgg+= "<h3 style='color:blue;'>회원가입 인증 코드입니다.</h3>";
         msgg+= "<div style='font-size:130%'>";
         msgg+= "CODE : <strong>";
-        msgg+= ePw+"</strong><div><br/> ";
+        msgg+= code+"</strong><div><br/> ";
         msgg+= "</div>";
         message.setText(msgg, "utf-8", "html");
         message.setFrom(new InternetAddress("maam10@knou.ac.kr", "kimdohyeong"));
+
+
+
         return message;
     }
 
@@ -73,13 +78,29 @@ public class MailServiceImpl implements MailService{
     public String sendSimpleMessage(String to) throws Exception {
         MimeMessage message = createMessage(to);
 
+        if(redisUtil.existData(to)){
+            redisUtil.deleteData(to);
+        }
         try{
             emailSender.send(message);
+            redisUtil.setDataExpire(to,code, 60 * 30L);
         }catch (MailException es){
             es.printStackTrace();
             throw new IllegalArgumentException();
         }
 
-        return ePw;
+
+        return code;
     }
+
+
+    public Boolean verifyEmailCode(String email, String code){
+        String codeFoundByEmail = redisUtil.getData(email);
+        if(codeFoundByEmail == null){
+            return false;
+        }
+        return codeFoundByEmail.equals(code);
+    }
+
 }
+

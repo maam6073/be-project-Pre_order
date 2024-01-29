@@ -8,4 +8,6 @@ import lombok.Getter;
 public class MailTestDto {
     @Email @NotBlank
     private String email;
+
+    private String code;
 }
