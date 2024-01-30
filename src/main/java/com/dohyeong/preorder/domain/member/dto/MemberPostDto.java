@@ -12,6 +12,11 @@ public class MemberPostDto {
     @Email
     private String email;
 
+    @NotBlank(message = "이름은 공백 없이 5-16자여야 합니다.")
+    @Length(min = 2, max = 16)
+    private String name;
+
+
     //비밀번호
     @NotBlank(message = "암호는 공백 없이 8-20자여야 합니다.")
     @Length(min = 8, max = 20)
@@ -20,5 +25,5 @@ public class MemberPostDto {
     //자기소개
     @NotBlank
     @Length(max = 150)
-    private String about;
+    private String description;
 }

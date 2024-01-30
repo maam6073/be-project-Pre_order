@@ -7,6 +7,11 @@
 
 #mail info
 src/main/resources/email.properties
+src/main/resources/application.yml
+docker-compose.yml
+
+build/**
+.gradle/**
 
 # User-specific stuff
 .idea/**/workspace.xml

@@ -3,6 +3,8 @@ package com.dohyeong.preorder.domain.member.controller;
 import com.dohyeong.preorder.domain.member.dto.MailTestDto;
 import com.dohyeong.preorder.domain.member.dto.MemberPatchDto;
 import com.dohyeong.preorder.domain.member.dto.MemberPostDto;
+import com.dohyeong.preorder.domain.member.dto.MemberResponseDto;
+import com.dohyeong.preorder.domain.member.entity.Member;
 import com.dohyeong.preorder.domain.member.mapper.MemberMapper;
 import com.dohyeong.preorder.domain.member.service.MemberService;
 import com.dohyeong.preorder.global.mail.service.MailServiceImpl;
@@ -54,12 +56,16 @@ public class MemberController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    //회원정보 수정
+    //프로필 수정
     @PatchMapping()
     public ResponseEntity updateMember(@Valid @RequestPart(value = "key")MemberPatchDto memberPatchDto,
                                        @RequestParam(value = "image")MultipartFile image) throws IOException{
-        return null;
+        Member member = memberService.updateMember(memberMapper.memberPatchToMember(memberPatchDto),image);
+        MemberResponseDto.PatchDto response = memberMapper.memberToPatchResponse(member);
+
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
     //회원 조회
+
 }

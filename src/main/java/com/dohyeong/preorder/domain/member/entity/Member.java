@@ -19,9 +19,17 @@ public class Member extends BaseEntity {
     @Column(name = "member_id")
     private Long member_id;
 
+    //권한
+    @Enumerated(EnumType.STRING)
+    private MemberRole memberRole;
+
     //이메일
     @Column(nullable = false, unique = true)
     private String email;
+
+    //이름
+    @Column(nullable = false)
+    private String name;
 
     //비밀번호
     @Column(nullable = false, length = 100)
@@ -34,5 +42,4 @@ public class Member extends BaseEntity {
     //사진 url
     @Column(nullable = false)
     private String profile_img;
-
 }

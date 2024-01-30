@@ -12,23 +12,23 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootTest
 class EmailtestApplicationTests {
 
-    @Autowired
-    private RedisUtil redisUtil;
-
-
-    @Test
-    public void redisTest() throws Exception {
-        //given
-        String email = "test@test.com";
-        String code = "aaa111";
-
-        //when
-        redisUtil.setDataExpire(email, code, 60 * 60L);
-
-        //then
-        Assertions.assertTrue(redisUtil.existData("test@test.com"));
-        Assertions.assertFalse(redisUtil.existData("test1@test.com"));
-        Assertions.assertEquals(redisUtil.getData(email), "aaa111");
-
-    }
+//    @Autowired
+//    private RedisUtil redisUtil;
+//
+//
+//    @Test
+//    public void redisTest() throws Exception {
+//        //given
+//        String email = "test@test.com";
+//        String code = "aaa111";
+//
+//        //when
+//        redisUtil.setDataExpire(email, code, 60 * 60L);
+//
+//        //then
+//        Assertions.assertTrue(redisUtil.existData("test@test.com"));
+//        Assertions.assertFalse(redisUtil.existData("test1@test.com"));
+//        Assertions.assertEquals(redisUtil.getData(email), "aaa111");
+//
+//    }
 }

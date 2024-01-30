@@ -1,9 +1,12 @@
 package com.dohyeong.preorder.global.s3.service;
 
-import com.amazonaws.services.s3.AmazonS3Client;
+
+import com.amazonaws.services.s3.AmazonS3;
+
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -22,13 +25,12 @@ import java.util.UUID;
 @Service
 public class S3Service {
 
-    private final AmazonS3Client amazonS3Client;
+    private final AmazonS3 amazonS3;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    private String s3DirName = "images";
-
+    private final String s3DirName = "images";
 
     public String imgUpload(MultipartFile multipartFile) throws IOException {
         File uploadFile = convert(multipartFile)
@@ -36,38 +38,32 @@ public class S3Service {
         return imgUpload(uploadFile, s3DirName);
     }
 
-    //S3 이미지 업로드
     private String imgUpload(File imgUploadFile, String dirName) {
         String fileName = dirName + "/" + uuidRandomCreate(); // 파일명 uuid로 수정
         String uploadImageUrl = putS3(imgUploadFile, fileName);
 
         removeFile(imgUploadFile);  // 로컬에 생성된 File 삭제
-        // (MultipartFile -> File 전환 하면서
-        // 로컬에 파일 생성됨
         return uploadImageUrl;
     }
 
-    //S3 이미지 수정
     public String imgUpdate(MultipartFile multipartFile, String imgName) throws IOException {
         String deleteFileName = s3DirName + "/" + imgName;
         if (!"".equals(s3DirName) && s3DirName != null) {
-            boolean isExistImg = amazonS3Client.doesObjectExist(bucket, deleteFileName);
-
+            boolean isExistImg = amazonS3.doesObjectExist(bucket, deleteFileName);
             if (isExistImg) {
-                amazonS3Client.deleteObject(bucket, deleteFileName);
+                amazonS3.deleteObject(bucket, deleteFileName);
             }
         }
 
         return imgUpload(multipartFile);
     }
 
-
     private String putS3(File imgUploadFile, String fileName) {
-        amazonS3Client.putObject(
+        amazonS3.putObject(
                 new PutObjectRequest(bucket, fileName, imgUploadFile)
                         .withCannedAcl(CannedAccessControlList.PublicRead)
         );
-        return amazonS3Client.getUrl(bucket, fileName).toString();
+        return amazonS3.getUrl(bucket, fileName).toString();
     }
 
     private void removeFile(File targetFile) {
@@ -89,10 +85,8 @@ public class S3Service {
         return Optional.empty();
     }
 
-    //UUID.v4 랜덤생성
     private String uuidRandomCreate() {
         String resultUuid = "";
-
         try {
             UUID uuidTemp = UUID.randomUUID();
             resultUuid = uuidTemp.toString().replaceAll("-", "");
