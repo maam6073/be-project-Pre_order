@@ -1,9 +1,6 @@
 package com.dohyeong.preorder.domain.member.controller;
 
-import com.dohyeong.preorder.domain.member.dto.MailTestDto;
-import com.dohyeong.preorder.domain.member.dto.MemberPatchDto;
-import com.dohyeong.preorder.domain.member.dto.MemberPostDto;
-import com.dohyeong.preorder.domain.member.dto.MemberResponseDto;
+import com.dohyeong.preorder.domain.member.dto.*;
 import com.dohyeong.preorder.domain.member.entity.Member;
 import com.dohyeong.preorder.domain.member.mapper.MemberMapper;
 import com.dohyeong.preorder.domain.member.service.MemberService;
@@ -64,6 +61,14 @@ public class MemberController {
         MemberResponseDto.PatchDto response = memberMapper.memberToPatchResponse(member);
 
         return new ResponseEntity<>(response,HttpStatus.OK);
+    }
+
+    //비밀번호 업데이트
+    @PatchMapping("/password")
+    public ResponseEntity updatePassword(@Valid @RequestBody MemberPasswordDto memberPasswordDto){
+        memberService.alterPassword(memberPasswordDto);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     //회원 조회

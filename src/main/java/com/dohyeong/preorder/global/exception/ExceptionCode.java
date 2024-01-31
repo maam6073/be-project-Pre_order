@@ -18,6 +18,7 @@ public enum ExceptionCode {
     DELETE_NOT_ALLOWED(400, "Delete not allowed"),
     ACCESS_NOT_ALLOWED(400, "Access not allowed"),
     INVALID_TOKEN(400, "Invalid token"),
+    BAD_REQUEST_PW(400,"비밀번호가 맞지 않습니다."),
 
     // 401 (권한없음)
     MEMBER_STATUS_SECESSION(401, "현재 회원은 탈퇴된 상태입니다"),
@@ -26,10 +27,6 @@ public enum ExceptionCode {
     NOT_FOUND_MEMBER(404, "Member not found"),
     NOT_FOUND_CONTENT(404, "Content not found"),
     NOT_FOUND_TYPE(404, "Content type not found"),
-    NOT_FOUND_APPLY(404, "Apply not found"),
-    NOT_FOUND_REVIEW(404, "Review not found"),
-    NOT_FOUND_CATEGORY(404, "Category not found"),
-    NOT_FOUND_LOCATION(404, "Location not found"),
 
     // 409 (중복)
     EXISTS_MEMBER(409, "Member exists"),

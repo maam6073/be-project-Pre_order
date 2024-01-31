@@ -1,6 +1,7 @@
 package com.dohyeong.preorder.domain.member.service;
 
 
+import com.dohyeong.preorder.domain.member.dto.MemberPasswordDto;
 import com.dohyeong.preorder.domain.member.entity.Member;
 import com.dohyeong.preorder.domain.member.repository.MemberRepository;
 import com.dohyeong.preorder.global.exception.BusinessLogicException;
@@ -31,7 +32,7 @@ public class MemberService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    private S3Service s3Service;
+    private final S3Service s3Service;
 
 
 
@@ -69,6 +70,21 @@ public class MemberService implements UserDetailsService {
         return memberRepository.save(curMember);
     }
 
+
+    //비밀번호 변경
+    //현재 비밀번호 입력해서 체크 후 변경
+    public void alterPassword(MemberPasswordDto memberPasswordDto){
+        Member curMember = getCurMember();
+
+        if(passwordEncoder.matches(memberPasswordDto.getCur_password(), curMember.getPassword())){
+            String encryptedPassword = passwordEncoder.encode(memberPasswordDto.getAlter_password());
+            curMember.setPassword(encryptedPassword);
+            memberRepository.save(curMember);
+        }
+        else
+            throw new BusinessLogicException(ExceptionCode.BAD_REQUEST_PW);
+
+    }
 
     //이메일 중복 검사
     @Transactional(readOnly = true)
