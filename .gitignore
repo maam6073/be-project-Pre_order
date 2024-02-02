@@ -11,9 +11,9 @@ src/main/resources/application.yml
 docker-compose.yml
 
 # build info
-build/**
-.gradle/**
-db/**
+build/
+.gradle/
+db/
 
 # User-specific stuff
 .idea/**/workspace.xml
