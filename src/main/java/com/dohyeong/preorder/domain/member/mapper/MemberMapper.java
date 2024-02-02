@@ -14,6 +14,7 @@ public class MemberMapper {
         return Member.builder().
                 email(memberPostDto.getEmail()).
                 name(memberPostDto.getName()).
+                nickname(memberPostDto.getNickname()).
                 password(memberPostDto.getPassword()).
                 description(memberPostDto.getDescription()).
                 memberRole(MemberRole.USER).
@@ -22,7 +23,7 @@ public class MemberMapper {
 
     public Member memberPatchToMember(MemberPatchDto memberPatchDto){
         return Member.builder().
-                name(memberPatchDto.getName()).
+                nickname(memberPatchDto.getNickname()).
                 description(memberPatchDto.getDescription()).
                 build();
     }
@@ -31,6 +32,7 @@ public class MemberMapper {
         return MemberResponseDto.PatchDto.builder().
                 email(member.getEmail()).
                 name(member.getName()).
+                nickname(member.getNickname()).
                 profile_img(member.getProfile_img()).
                 description(member.getDescription())
                 .build();

@@ -19,6 +19,7 @@ public enum ExceptionCode {
     ACCESS_NOT_ALLOWED(400, "Access not allowed"),
     INVALID_TOKEN(400, "Invalid token"),
     BAD_REQUEST_PW(400,"비밀번호가 맞지 않습니다."),
+    BAD_REQUEST_FOLLOW(400,"Bad request follow"),
 
     // 401 (권한없음)
     MEMBER_STATUS_SECESSION(401, "현재 회원은 탈퇴된 상태입니다"),

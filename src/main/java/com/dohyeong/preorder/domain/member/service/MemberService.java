@@ -54,6 +54,7 @@ public class MemberService implements UserDetailsService {
 
     //회원 정보 수정(이름,프로필 이미지, 인사말)
     public Member updateMember(Member member, MultipartFile image) throws IOException{
+        verifyMemberByNickName(member.getNickname());
         Member curMember = getCurMember();
 
 
@@ -61,11 +62,8 @@ public class MemberService implements UserDetailsService {
             String imgUrl = s3Service.imgUpdate(image,findMemberByImgName(curMember.getProfile_img()));
             curMember.setProfile_img(imgUrl);
         }
-
-        Optional.ofNullable(member.getDescription())
-                .ifPresent(curMember::setDescription);
-        Optional.ofNullable(member.getName())
-                .ifPresent(curMember::setName);
+        Optional.ofNullable(member.getDescription()).ifPresent(curMember::setDescription);
+        Optional.ofNullable(member.getNickname()).ifPresent(curMember::setNickname);
 
         return memberRepository.save(curMember);
     }
@@ -84,6 +82,14 @@ public class MemberService implements UserDetailsService {
         else
             throw new BusinessLogicException(ExceptionCode.BAD_REQUEST_PW);
 
+    }
+
+    //닉네임 중복 검사
+    @Transactional(readOnly = true)
+    private void verifyMemberByNickName(String nickname){
+        Optional<Member> member = memberRepository.findByNickname(nickname);
+        if(member.isPresent())
+            throw new BusinessLogicException(ExceptionCode.EXISTS_MEMBER);
     }
 
     //이메일 중복 검사
@@ -107,6 +113,16 @@ public class MemberService implements UserDetailsService {
         
         return loginMember.get();
     }
+
+    //이름으로 사용자 찾기
+    public Member getMemberByName(String name){
+        Optional<Member> Member = memberRepository.findByName(name);
+        if(Member.isEmpty())
+            throw new BusinessLogicException(ExceptionCode.NOT_FOUND_MEMBER);
+
+        return Member.get();
+    }
+
 
 
     //이미지이름 가공

@@ -7,6 +7,7 @@ import com.dohyeong.preorder.global.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -40,10 +41,14 @@ public class SecurityConfig{
                 )
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests
-                                .requestMatchers("/").permitAll()
-                                .requestMatchers("/members/**").permitAll()
+                                .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
+                                .requestMatchers("/members/emailSend").permitAll()
+                                .requestMatchers("/members/emailConfirm").permitAll()
+                                .requestMatchers("/members").permitAll()
                                 .requestMatchers("/auth/login").permitAll()
-                                .requestMatchers("/auth/logout").permitAll()
+                                .requestMatchers("/auth/logout").authenticated()
+                                .requestMatchers("/members/password").authenticated()
+                                .requestMatchers("/follow/**").authenticated()
                 )
                 .formLogin((formLogin) -> formLogin.disable());
 

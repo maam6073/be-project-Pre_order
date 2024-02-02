@@ -9,7 +9,7 @@ public class MemberPatchDto {
     //이름
     @NotBlank
     @Length(max = 10)
-    private String name;
+    private String nickname;
 
     //자기소개
     @NotBlank
