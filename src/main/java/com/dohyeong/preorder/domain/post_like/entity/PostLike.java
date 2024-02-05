@@ -1,10 +1,17 @@
-package com.dohyeong.preorder.domain.pose_like.entity;
+package com.dohyeong.preorder.domain.post_like.entity;
 
 import com.dohyeong.preorder.domain.member.entity.Member;
 import com.dohyeong.preorder.domain.post.entity.Post;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"post_id","member_id"}))
 public class PostLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

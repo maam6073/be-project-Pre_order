@@ -27,6 +27,7 @@ public enum ExceptionCode {
     // 404
     NOT_FOUND_MEMBER(404, "Member not found"),
     NOT_FOUND_POST(404, "POST not found"),
+    NOT_FOUND_COMMENT(404,"Comment not found"),
 
     // 409 (중복)
     EXISTS_MEMBER(409, "Member exists"),

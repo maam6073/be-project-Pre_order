@@ -22,12 +22,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class PostController {
     private final PostService postService;
     private final PostMapper postMapper;
+
+    //글작성
     @PostMapping()
     public ResponseEntity<PostResponseDto.createResponseDto> createPost(@Valid @RequestBody CreatePostDto createPostDto){
         Post post = postService.savePost(postMapper.createPostDtoToPost(createPostDto));
         PostResponseDto.createResponseDto response = postMapper.postToPostResponseDto(post);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
+
+    //뉴스피드 글 가져오기
 
 }
 

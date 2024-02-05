@@ -51,6 +51,8 @@ public class SecurityConfig{
                                 .requestMatchers("/follow/**").authenticated()
                                 .requestMatchers("/post/**").authenticated()
                                 .requestMatchers("/comment/**").authenticated()
+                                .requestMatchers("/post-like/**").authenticated()
+                                .requestMatchers("/comment-like/**").authenticated()
                 )
                 .formLogin((formLogin) -> formLogin.disable());
 

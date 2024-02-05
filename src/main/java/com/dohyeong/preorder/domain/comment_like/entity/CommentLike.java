@@ -3,8 +3,15 @@ package com.dohyeong.preorder.domain.comment_like.entity;
 import com.dohyeong.preorder.domain.comment.entity.Comment;
 import com.dohyeong.preorder.domain.member.entity.Member;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"comment_id","member_id"}))
 public class CommentLike {
 
     @Id
