@@ -3,6 +3,7 @@ package com.dohyeong.preorder.domain.member.entity;
 
 import com.dohyeong.preorder.domain.common.BaseEntity;
 import com.dohyeong.preorder.domain.follow.entity.Follow;
+import com.dohyeong.preorder.domain.post.entity.Post;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,13 +24,16 @@ public class Member extends BaseEntity {
     @Column(name = "member_id")
     private Long member_id;
 
-
     //팔로우
-    @OneToMany(mappedBy = "follower", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "follower", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Follow> followings;
 
-    @OneToMany(mappedBy = "following", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "following", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Follow> followers;
+
+    //내가 작성한 글
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private @Builder.Default List<Post> posts = new ArrayList<>();
 
     //권한
     @Enumerated(EnumType.STRING)

@@ -9,8 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 public interface FollowRepository extends JpaRepository<Follow,Long> {
-
-
     @Query("select f from Follow f where f.follower = :follower and f.following = :following")
     Optional<Follow> findFollow(@Param("follower") Member follower, @Param("following") Member following);
 }
