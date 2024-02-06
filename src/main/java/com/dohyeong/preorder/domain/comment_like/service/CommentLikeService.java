@@ -1,5 +1,7 @@
 package com.dohyeong.preorder.domain.comment_like.service;
 
+import com.dohyeong.preorder.domain.activitylog.entity.ActivityType;
+import com.dohyeong.preorder.domain.activitylog.service.ActivityLogService;
 import com.dohyeong.preorder.domain.comment.entity.Comment;
 import com.dohyeong.preorder.domain.comment.repository.CommentRepository;
 import com.dohyeong.preorder.domain.comment_like.entity.CommentLike;
@@ -16,15 +18,19 @@ import org.springframework.stereotype.Service;
 public class CommentLikeService {
     private final CommentRepository commentRepository;
     private final CommentLikeRepository commentLikeRepository;
+    private final ActivityLogService activityLogService;
     public CommentLike saveCommentLike(long commentId){
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND_COMMENT));
-        Member member = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Member curMember = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         CommentLike saveCommentLike = CommentLike.builder()
                 .comment(comment)
-                .member(member)
+                .member(curMember)
                 .build();
+
+        activityLogService.logMemberActivity(curMember,curMember.getName()+"님이 "
+                +comment.getMember().getName() + "님 글을 좋아합니다.", ActivityType.COMMENT_LIKE);
         return commentLikeRepository.save(saveCommentLike);
     }
 }

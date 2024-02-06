@@ -1,5 +1,7 @@
 package com.dohyeong.preorder.domain.follow.service;
 
+import com.dohyeong.preorder.domain.activitylog.entity.ActivityType;
+import com.dohyeong.preorder.domain.activitylog.service.ActivityLogService;
 import com.dohyeong.preorder.domain.follow.entity.Follow;
 import com.dohyeong.preorder.domain.follow.repository.FollowRepository;
 import com.dohyeong.preorder.domain.member.entity.Member;
@@ -10,11 +12,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class FollowService {
     private final FollowRepository followRepository;
     private final MemberService memberService;
+    private final ActivityLogService activityLogService;
+
     //팔로우
     public String follow(String followerName){
         Member following = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -34,9 +40,12 @@ public class FollowService {
                 .build();
 
         followRepository.save(follow);
+
+        activityLogService.logMemberActivity(following,following.getName()+
+                "님이 "+follower.getName() + "님을 팔로우 합니다.", ActivityType.FOLLOW);
+
         return "Success";
     }
-
 
 
     //following 전체 출력

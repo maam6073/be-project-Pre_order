@@ -1,5 +1,7 @@
 package com.dohyeong.preorder.domain.comment.service;
 
+import com.dohyeong.preorder.domain.activitylog.entity.ActivityType;
+import com.dohyeong.preorder.domain.activitylog.service.ActivityLogService;
 import com.dohyeong.preorder.domain.comment.dto.CommentPostDto;
 import com.dohyeong.preorder.domain.comment.entity.Comment;
 import com.dohyeong.preorder.domain.comment.repository.CommentRepository;
@@ -17,6 +19,8 @@ import org.springframework.stereotype.Service;
 public class CommentService {
 private final CommentRepository commentRepository;
 private final PostRepository postRepository;
+private final ActivityLogService activityLogService;
+
     public Comment saveComment(CommentPostDto commentPostDto){
 
         Post post = postRepository.findById(commentPostDto.getPost_id())
@@ -27,6 +31,9 @@ private final PostRepository postRepository;
                 .member(curMember)
                 .comment(commentPostDto.getComment())
                 .build();
+
+        activityLogService.logMemberActivity(curMember, curMember.getName()+" 님이 "
+                +post.getMember().getName()+" 님의 글에 댓글을 남겼습니다.", ActivityType.COMMENT);
 
         return commentRepository.save(comment);
     }

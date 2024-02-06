@@ -1,17 +1,20 @@
 package com.dohyeong.preorder.domain.comment.entity;
 
+import com.dohyeong.preorder.domain.common.BaseEntity;
 import com.dohyeong.preorder.domain.member.entity.Member;
 import com.dohyeong.preorder.domain.post.entity.Post;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comment {
+@Getter
+public class Comment extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
     @Id

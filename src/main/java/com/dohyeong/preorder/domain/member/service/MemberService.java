@@ -125,6 +125,16 @@ public class MemberService implements UserDetailsService {
 
 
 
+    //아이디로 사용자 찾기
+    public Member getMemberById(long memberId){
+        Optional<Member> Member = memberRepository.findById(memberId);
+        if(Member.isEmpty())
+            throw new BusinessLogicException(ExceptionCode.NOT_FOUND_MEMBER);
+
+        return Member.get();
+    }
+
+
     //이미지이름 가공
     private String findMemberByImgName(String url){
         return url.substring(url.lastIndexOf("/")+1);

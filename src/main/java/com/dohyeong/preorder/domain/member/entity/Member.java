@@ -9,6 +9,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -25,10 +26,10 @@ public class Member extends BaseEntity {
     private Long member_id;
 
     //팔로우
-    @OneToMany(mappedBy = "follower", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "following", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Follow> followings;
 
-    @OneToMany(mappedBy = "following", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "follower", fetch = FetchType.EAGER,cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Follow> followers;
 
     //내가 작성한 글

@@ -5,12 +5,14 @@ import com.dohyeong.preorder.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"comment_id","member_id"}))
 public class CommentLike {
 

@@ -1,6 +1,8 @@
 package com.dohyeong.preorder.domain.post.service;
 
 
+import com.dohyeong.preorder.domain.activitylog.entity.ActivityType;
+import com.dohyeong.preorder.domain.activitylog.service.ActivityLogService;
 import com.dohyeong.preorder.domain.member.entity.Member;
 import com.dohyeong.preorder.domain.post.entity.Post;
 import com.dohyeong.preorder.domain.post.repository.PostRepository;
@@ -13,16 +15,19 @@ import org.springframework.stereotype.Service;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final ActivityLogService activityLogService;
 
     //글 저장
     public Post savePost(Post post){
-        Member member = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Member curMember = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Post savePost =
                 Post.builder()
-                        .member(member)
+                        .member(curMember)
                         .title(post.getTitle())
                         .body(post.getBody())
                         .build();
+        activityLogService.logMemberActivity(curMember, curMember.getName()+" 님이 글을 남겼습니다.\n"+post.getTitle()+"\n"
+                                                                +post.getBody(), ActivityType.POST);
         return postRepository.save(savePost);
     }
 
