@@ -41,7 +41,7 @@ public class FollowService {
 
         followRepository.save(follow);
 
-        activityLogService.logMemberActivity(following,following.getName()+
+        activityLogService.logMemberActivity(following, follower.getName(),following.getName()+
                 "님이 "+follower.getName() + "님을 팔로우 합니다.", ActivityType.FOLLOW);
 
         return "Success";

@@ -1,8 +1,7 @@
 package com.dohyeong.preorder.domain.newsfeed.dto;
 
 import com.dohyeong.preorder.domain.activitylog.entity.ActivityType;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -15,4 +14,13 @@ public class NewsFeedResponseDto {
     private String memberProfileUrl;
     private ActivityType type;
     private String activity;
+
+    @Builder
+    @Getter @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MyActivityResponseDto{
+        private ActivityType type;
+        private String activity;
+    }
 }

@@ -29,8 +29,8 @@ public class CommentLikeService {
                 .member(curMember)
                 .build();
 
-        activityLogService.logMemberActivity(curMember,curMember.getName()+"님이 "
-                +comment.getMember().getName() + "님 글을 좋아합니다.", ActivityType.COMMENT_LIKE);
+        activityLogService.logMemberActivity(curMember,comment.getMember().getName(), curMember.getName()+"님이 "
+                +comment.getMember().getName() + "님 댓글을 좋아합니다.", ActivityType.COMMENT_LIKE);
         return commentLikeRepository.save(saveCommentLike);
     }
 }

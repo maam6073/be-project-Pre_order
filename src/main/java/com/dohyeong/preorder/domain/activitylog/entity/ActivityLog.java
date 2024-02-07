@@ -23,6 +23,8 @@ public class ActivityLog extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member followingMember;
 
+    private String fromMemberName;
+
     private ActivityType type;
 
     private String activity;

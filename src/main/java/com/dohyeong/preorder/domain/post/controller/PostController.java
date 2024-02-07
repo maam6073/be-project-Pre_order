@@ -32,7 +32,5 @@ public class PostController {
     }
 
 
-    //뉴스피드 글 가져오기
-
 }
 

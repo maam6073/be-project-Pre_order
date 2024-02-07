@@ -29,8 +29,8 @@ public class PostLikeService {
                 .member(curMember)
                 .build();
 
-        activityLogService.logMemberActivity(curMember, savePostLike.getPost().getTitle()+" post에"
-                                                        +curMember.getName()+" 님이 좋아요를 남겼습니다.", ActivityType.POST_LIKE);
+        activityLogService.logMemberActivity(curMember, savePostLike.getPost().getMember().getName(),
+                curMember.getName()+"님이 "+savePostLike.getPost().getTitle()+" 포스트에 좋아요를 남겼습니다.", ActivityType.POST_LIKE);
         return postLikeRepository.save(savePostLike);
     }
 

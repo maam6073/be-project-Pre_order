@@ -32,8 +32,9 @@ private final ActivityLogService activityLogService;
                 .comment(commentPostDto.getComment())
                 .build();
 
-        activityLogService.logMemberActivity(curMember, curMember.getName()+" 님이 "
-                +post.getMember().getName()+" 님의 글에 댓글을 남겼습니다.", ActivityType.COMMENT);
+        activityLogService.logMemberActivity(curMember, post.getMember().getName(),curMember.getName()+" 님이 "
+                +post.getMember().getName()+" 님의\""+ post.getTitle() +"\" 글에 댓글을 남겼습니다.", ActivityType.COMMENT);
+
 
         return commentRepository.save(comment);
     }
